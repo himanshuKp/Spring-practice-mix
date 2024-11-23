@@ -7,6 +7,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import javax.swing.text.html.Option;
+import java.util.Optional;
+
 @SpringBootApplication
 public class CruddemoApplication {
 
@@ -25,8 +28,25 @@ public class CruddemoApplication {
 
 //			getAllStudents(studentDAO);
 
-			getAllStudentsBasedOnLastName(studentDAO);
+//			getAllStudentsBasedOnLastName(studentDAO);
+
+			updateStudent(studentDAO);
 		};
+	}
+
+	private void updateStudent(StudentDAO studentDAO){
+//		get the student based on id
+		Student studentOptional = studentDAO.findById(2);
+		System.out.println("Before update record: "+studentOptional);
+
+//		set the name
+		studentOptional.setFirstName("test2");
+
+		//		update the record
+		System.out.println("updating the record");
+		studentDAO.updateStudent(studentOptional);
+
+		System.out.println("Updated record: "+studentOptional);
 	}
 
 	private void getAllStudentsBasedOnLastName(StudentDAO studentDAO) {
