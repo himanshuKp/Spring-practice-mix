@@ -21,8 +21,20 @@ public class CruddemoApplication {
 
 //			createMultipleStudents(studentDAO);
 
-			readStudent(studentDAO);
+//			readStudent(studentDAO);
+
+//			getAllStudents(studentDAO);
+
+			getAllStudentsBasedOnLastName(studentDAO);
 		};
+	}
+
+	private void getAllStudentsBasedOnLastName(StudentDAO studentDAO) {
+		studentDAO.findByLastName("test").parallelStream().forEachOrdered(System.out::println);
+	}
+
+	private void getAllStudents(StudentDAO studentDAO) {
+		studentDAO.findAll().parallelStream().forEachOrdered(System.out::println);
 	}
 
 	private void readStudent(StudentDAO studentDAO){
