@@ -2,9 +2,9 @@ package com.luv2code.demo.rest;
 
 import com.luv2code.demo.entity.User;
 import jakarta.annotation.PostConstruct;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,5 +29,24 @@ public class StudentRestController {
     @GetMapping("allStudents")
     private List<User> getStudentsList(){
         return studentsList;
+    }
+
+    @GetMapping("findStudent/{studentId}")
+    private User getStudent(@PathVariable int studentId){
+        if(studentId > studentsList.size() || studentId < 0) {
+            throw new StudentNotFoundException("Student id not found: "+studentId);
+        }
+
+        return studentsList.get(studentId);
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<StudentErrorResponse> handleStudentException(StudentNotFoundException exception){
+        StudentErrorResponse errorResponse = new StudentErrorResponse();
+        errorResponse.setErrorCode(HttpStatus.NOT_FOUND.value());
+        errorResponse.setErrorMessage(exception.getMessage());
+        errorResponse.setErrorTimeStamp(System.currentTimeMillis());
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 }
