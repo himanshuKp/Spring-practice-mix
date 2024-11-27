@@ -6,4 +6,10 @@ import java.util.List;
 
 public interface EmployeeService {
     List<Employee> findEmployees();
+
+    Employee findEmployee(int employeeId);
+
+    Employee addEmployee(Employee employee);
+
+    void deleteEmployee(int employeeId);
 }
