@@ -1,13 +1,12 @@
 package com.luv2code.demo.rest;
 
-import com.luv2code.demo.dao.EmployeeDAO;
 import com.luv2code.demo.entity.Employee;
 import com.luv2code.demo.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Random;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -27,7 +26,16 @@ public class EmployeeRestController {
 
     @GetMapping("employees/{employeeId}")
     private Employee findEmployee(@PathVariable int employeeId) {
-        return employeeService.findEmployee(employeeId);
+        Optional<Employee> employee = employeeService.findEmployee(employeeId);
+
+        Employee employeeRecord = new Employee();
+        if (employee.isPresent()) {
+            employeeRecord = employee.get();
+        } else {
+            throw new RuntimeException("Employee record not found");
+        }
+
+        return employeeRecord;
     }
 
     @PostMapping("employees")

@@ -1,43 +1,41 @@
 package com.luv2code.demo.service;
 
-import com.luv2code.demo.dao.EmployeeDAO;
 import com.luv2code.demo.entity.Employee;
+import com.luv2code.demo.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService{
 
-    private EmployeeDAO employeeDAO;
+    private EmployeeRepository employeeRepository;
 
     @Autowired
-    public EmployeeServiceImpl(EmployeeDAO theEmployeeDAO){
-        employeeDAO = theEmployeeDAO;
+    public EmployeeServiceImpl(EmployeeRepository theEmployeeRepository){
+        employeeRepository = theEmployeeRepository;
     }
 
     @Override
     public List<Employee> findEmployees() {
-        return employeeDAO.findEmployees();
+        return employeeRepository.findAll();
     }
 
     @Override
-    public Employee findEmployee(int employeeId) {
-        return employeeDAO.findEmployee(employeeId);
+    public Optional<Employee> findEmployee(int employeeId) {
+        return employeeRepository.findById(employeeId);
     }
 
     @Override
-    @Transactional
     public Employee addEmployee(Employee employee) {
-        return employeeDAO.addEmployee(employee);
+        return employeeRepository.save(employee);
     }
 
     @Override
-    @Transactional
     public void deleteEmployee(int employeeId) {
-        employeeDAO.deleteEmployee(employeeId);
+        employeeRepository.deleteById(employeeId);
     }
 
 }
