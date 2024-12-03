@@ -13,15 +13,15 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CourseCode {
 
-//    default course code
-    public String value() default "LUV";
+    //    default course code
+    String value() default "LUV";
 
-//    default error message
-    public String message() default "must start with LUV";
+    //    default error message
+    String message() default "must start with LUV";
 
-//    default group by
-    public Class<?>[] groups() default {};
+    //    default group by
+    Class<?>[] groups() default {};
 
-//    default payloads
-    public Class<? extends Payload>[] payload() default {};
+    //    default payloads
+    Class<? extends Payload>[] payload() default {};
 }
