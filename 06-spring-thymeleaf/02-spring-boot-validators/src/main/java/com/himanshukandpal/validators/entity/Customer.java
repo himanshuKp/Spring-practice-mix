@@ -1,5 +1,6 @@
 package com.himanshukandpal.validators.entity;
 
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -9,7 +10,8 @@ public class Customer {
     @NotNull(message = "is required")
     @Size(min = 1, message = "is required")
     private String lastName;
-    @Min(value = 0, message = "at least 1 is required")
+    @Min(value = 1, message = "at least 1 is required")
+    @Max(value = 10, message = "at most 10 is allowed")
     private int freePasses;
 
     public String getFirstName() {
@@ -28,5 +30,11 @@ public class Customer {
         this.lastName = lastName;
     }
 
-    
+    public int getFreePasses() {
+        return freePasses;
+    }
+
+    public void setFreePasses(int freePasses) {
+        this.freePasses = freePasses;
+    }
 }
