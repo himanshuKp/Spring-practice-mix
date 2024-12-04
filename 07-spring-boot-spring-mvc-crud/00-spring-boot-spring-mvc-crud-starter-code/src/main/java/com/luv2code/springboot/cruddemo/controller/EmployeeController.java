@@ -41,4 +41,19 @@ public class EmployeeController {
 
          return "redirect:/employees/list";
     }
+
+    @GetMapping("/edit")
+    public String editEmployeePage(@RequestParam int employeeId, Model model) {
+        Employee employee = employeeService.findById(employeeId);
+
+        model.addAttribute("employee", employee);
+
+        return "add-employee";
+    }
+
+    @GetMapping("/delete")
+    public String deleteEmployee(@RequestParam int employeeId) {
+        employeeService.deleteById(employeeId);
+        return "redirect:/employees/list";
+    }
 }

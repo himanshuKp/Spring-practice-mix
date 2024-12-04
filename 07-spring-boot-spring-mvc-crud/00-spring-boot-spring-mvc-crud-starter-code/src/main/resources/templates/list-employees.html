@@ -19,6 +19,7 @@
       <th>First Name</th>
       <th>Last Name</th>
       <th>Email</th>
+      <th>Action</th>
     </tr>
     </thead>
 
@@ -28,7 +29,15 @@
       <td th:text="${tempEmployee.firstName}" />
       <td th:text="${tempEmployee.lastName}" />
       <td th:text="${tempEmployee.email}" />
-
+      <td>
+        <a class="btn btn-secondary" th:href="@{/employees/edit(employeeId=${tempEmployee.id})}">
+          Update
+        </a>
+        <a class="btn btn-danger" th:href="@{/employees/delete(employeeId=${tempEmployee.id})}"
+        onclick="return confirm('Are you sure you want to delete this employee?')">
+          Delete
+        </a>
+      </td>
     </tr>
     </tbody>
   </table>
