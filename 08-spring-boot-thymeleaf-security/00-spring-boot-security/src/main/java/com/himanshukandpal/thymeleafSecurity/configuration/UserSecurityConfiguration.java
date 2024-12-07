@@ -2,9 +2,12 @@ package com.himanshukandpal.thymeleafSecurity.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class UserSecurityConfiguration {
@@ -30,5 +33,22 @@ public class UserSecurityConfiguration {
                 .build();
 
         return new InMemoryUserDetailsManager(user1, user2, user3);
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity.authorizeHttpRequests(configurer ->
+                configurer
+                        .anyRequest()
+                        .authenticated()
+        )
+                .formLogin(formLogin ->
+                        formLogin
+                                .loginPage("/showLoginForm")
+                                .loginProcessingUrl("/authenticateLoginUser")
+                                .permitAll()
+                )
+                .logout(LogoutConfigurer::permitAll);
+        return httpSecurity.build();
     }
 }
