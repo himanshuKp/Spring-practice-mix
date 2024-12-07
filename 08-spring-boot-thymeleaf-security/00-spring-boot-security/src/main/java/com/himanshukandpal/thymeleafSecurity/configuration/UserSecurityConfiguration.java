@@ -50,7 +50,9 @@ public class UserSecurityConfiguration {
                                 .loginProcessingUrl("/authenticateTheUser")
                                 .permitAll()
                 )
-                .logout(logout -> logout.permitAll()
+                .logout(LogoutConfigurer::permitAll)
+                .exceptionHandling(exception ->
+                        exception.accessDeniedPage("/accessDenied")
                 );
 
         return http.build();
