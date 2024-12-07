@@ -17,11 +17,17 @@
       <span sec:authentication="principal.authorities"></span>
   </p>
   <hr>
-  <p>
-      <a th:href="@{/leaders}">Leadership Portal (for managers only)</a>
-      <br>
-      and <a th:href="@{/systems}">Admin Portal</a>
-  </p>
+  <div sec:authorize="hasRole('MANAGER')">
+      <p>
+          <a th:href="@{/leaders}">Leadership Portal (for managers only)</a>
+      </p>
+  </div>
+  <br>
+  <div sec:authorize="hasRole('ADMIN')">
+      <p>
+          and <a th:href="@{/systems}">Admin Portal</a>
+      </p>
+  </div>
   <hr>
 <!--    logout button-->
     <form action="#" th:action="@{/logout}" method="post">
