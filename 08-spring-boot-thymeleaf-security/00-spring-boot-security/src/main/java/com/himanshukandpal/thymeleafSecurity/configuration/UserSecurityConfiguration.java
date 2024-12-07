@@ -17,38 +17,42 @@ public class UserSecurityConfiguration {
         UserDetails user1 = User.builder()
                 .username("usera")
                 .password("{noop}usera")
-                .authorities("EMPLOYEE")
+                .roles("EMPLOYEE")
                 .build();
 
         UserDetails user2 = User.builder()
                 .username("userb")
                 .password("{noop}userb")
-                .authorities("EMPLOYEE", "MANAGER")
+                .roles("EMPLOYEE", "MANAGER")
                 .build();
 
         UserDetails user3 = User.builder()
                 .username("userc")
                 .password("{noop}userc")
-                .authorities("EMPLOYEE", "MANAGER", "ADMIN")
+                .roles("EMPLOYEE", "MANAGER", "ADMIN")
                 .build();
 
         return new InMemoryUserDetailsManager(user1, user2, user3);
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.authorizeHttpRequests(configurer ->
-                configurer
-                        .anyRequest()
-                        .authenticated()
-        )
-                .formLogin(formLogin ->
-                        formLogin
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests(configurer ->
+                        configurer
+                                .requestMatchers("/").hasRole("EMPLOYEE")
+                                .requestMatchers("/leaders/**").hasRole("MANAGER")
+                                .requestMatchers("/systems/**").hasRole("ADMIN")
+                                .anyRequest().authenticated()
+                )
+                .formLogin(form ->
+                        form
                                 .loginPage("/showLoginForm")
-                                .loginProcessingUrl("/authenticateLoginUser")
+                                .loginProcessingUrl("/authenticateTheUser")
                                 .permitAll()
                 )
-                .logout(LogoutConfigurer::permitAll);
-        return httpSecurity.build();
+                .logout(logout -> logout.permitAll()
+                );
+
+        return http.build();
     }
 }

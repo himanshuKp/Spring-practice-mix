@@ -10,7 +10,7 @@
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-md-6">
-        <form th:action="@{/authenticateLoginUser}" method="post">
+        <form th:action="@{/authenticateTheUser}" method="post">
           <div th:if="${param.error}" class="alert alert-danger">
             Sorry, there was an error, please try again.
           </div>
