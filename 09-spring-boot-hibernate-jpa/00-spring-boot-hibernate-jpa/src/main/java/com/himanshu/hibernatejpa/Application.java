@@ -3,11 +3,11 @@ package com.himanshu.hibernatejpa;
 import com.himanshu.hibernatejpa.dao.AppDao;
 import com.himanshu.hibernatejpa.entity.Instructor;
 import com.himanshu.hibernatejpa.entity.InstructorDetail;
-import org.apache.catalina.core.ApplicationContext;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 @SpringBootApplication
 public class Application {
@@ -20,8 +20,18 @@ public class Application {
     public CommandLineRunner commandLineRunner(AppDao appDao) {
        return runner -> {
 //           createInstructor(appDao);
-           findInstructor(appDao);
+//           findInstructor(appDao);
+           deleteInstructor(appDao);
        };
+    }
+
+    private void deleteInstructor(AppDao appDao) {
+        int instructorId = 1;
+        System.out.println("Deleting instructor " + instructorId);
+
+        appDao.deleteInstructor(instructorId);
+
+        System.out.println("Deleted instructor " + instructorId);
     }
 
     private void findInstructor(AppDao appDao) {

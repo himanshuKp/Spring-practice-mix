@@ -6,4 +6,6 @@ public interface AppDao {
     void save(Instructor instructor);
 
     Instructor findById(int id);
+
+    void deleteInstructor(int id);
 }
