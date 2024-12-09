@@ -24,12 +24,13 @@ public class Application {
        return runner -> {
 //           createInstructor(appDao);
 //           findInstructor(appDao);
-//           deleteInstructor(appDao);
+           deleteInstructor(appDao);
 //           findInstructorDetail(appDao);
 //           createCourseWithInstructor(appDao);
 //           findCoursesWithInstructor(appDao);
 //           updateCourse(appDao);
-           updateInstructor(appDao);
+//           updateInstructor(appDao);
+//            deleteCourse(appDao);
        };
     }
 
@@ -112,5 +113,11 @@ public class Application {
         System.out.println("Saving the instructor");
         appDao.save(instructor);
         System.out.println("Saved the instructor");
+    }
+
+    private void deleteCourse(AppDao appDao) {
+        int courseId = 10;
+        appDao.deleteCourse(courseId);
+        System.out.println("Deleted course");
     }
 }
