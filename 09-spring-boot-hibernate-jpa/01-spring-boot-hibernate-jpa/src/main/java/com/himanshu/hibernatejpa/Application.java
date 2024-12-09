@@ -27,9 +27,26 @@ public class Application {
 //           deleteInstructor(appDao);
 //           findInstructorDetail(appDao);
 //           createCourseWithInstructor(appDao);
-
-           findCoursesWithInstructor(appDao);
+//           findCoursesWithInstructor(appDao);
+//           updateCourse(appDao);
+           updateInstructor(appDao);
        };
+    }
+
+    private void updateInstructor(AppDao appDao) {
+        int instructorId = 1;
+        Instructor instructor = appDao.findById(instructorId);
+        instructor.setFirstName("Himanshu");
+        appDao.updateInstructor(instructor);
+        System.out.println(instructor.getFirstName());
+    }
+
+    private void updateCourse(AppDao appDao) {
+        int courseId = 10;
+        Course course = appDao.findCourseById(courseId);
+        course.setTitle("Updated name 1");
+        appDao.updateCourse(course);
+        System.out.println("Course updated");
     }
 
     private void findCoursesWithInstructor(AppDao appDao) {
