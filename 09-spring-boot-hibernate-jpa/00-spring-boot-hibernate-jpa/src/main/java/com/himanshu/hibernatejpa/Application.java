@@ -21,8 +21,16 @@ public class Application {
        return runner -> {
 //           createInstructor(appDao);
 //           findInstructor(appDao);
-           deleteInstructor(appDao);
+//           deleteInstructor(appDao);
+           findInstructorDetail(appDao);
        };
+    }
+
+    private void findInstructorDetail(AppDao appDao) {
+        int id = 2;
+        System.out.println("Finding instructor detail by id: " + id);
+        System.out.println(appDao.findInstructorDetailById(id).getInstructor());
+        System.out.println("Stop");
     }
 
     private void deleteInstructor(AppDao appDao) {
