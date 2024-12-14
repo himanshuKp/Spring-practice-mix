@@ -8,7 +8,7 @@ public class AccountDAOImpl implements AccountDAO {
         System.out.println(getClass() + ": DOING SOME DB WORKS");
     }
 
-    public void addSillyAccount() {
+    public void addSillyAccount(int id, double amount) {
         System.out.println(getClass() + ": DOING SOME DB ACCOUNT SECONDWORKS");
     }
 }

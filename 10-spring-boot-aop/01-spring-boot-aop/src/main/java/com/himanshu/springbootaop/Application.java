@@ -25,7 +25,7 @@ public class Application {
 
         System.out.println("Random text");
 
-        accountDAO.addSillyAccount();
+        accountDAO.addSillyAccount(10, 30.0);
     }
 
 }
