@@ -8,19 +8,13 @@ import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
-@Order(2)
-public class MyDemoAspects {
-
+@Order(1)
+public class MyCloudAspect {
     @Pointcut("execution(* com.himanshu.springbootaop.dao.*.*(..))")
     private void beforeDaoPackage() {}
 
     @Before("beforeDaoPackage()")
     public void beforeAddAccount(){
-        System.out.println("==> beforeAddAccount on method in demo aspect");
-    }
-
-    @Before("beforeDaoPackage()")
-    public void performApiAnalytics(){
-        System.out.println("==> performApiAnalytics on method");
+        System.out.println("==> beforeAddAccount on method in cloud aspect");
     }
 }
