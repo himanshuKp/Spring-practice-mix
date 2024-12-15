@@ -1,5 +1,7 @@
 package com.himanshu.springbootaop.aspect;
 
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
@@ -22,5 +24,14 @@ public class MyDemoAspects {
     @Before("beforeDaoPackage()")
     public void performApiAnalytics(){
         System.out.println("==> performApiAnalytics on method");
+    }
+
+    @AfterThrowing(
+            pointcut = "beforeDaoPackage()",
+            throwing = "exc"
+    )
+    public void afterThrowingAdviceDemo(JoinPoint joinPoint, Throwable exc){
+        System.out.println("==> afterThrowingAdviceDemo on method : "+joinPoint.getSignature().getName());
+        System.out.println("==> afterThrowingAdviceDemo on method : "+exc.getMessage());
     }
 }
