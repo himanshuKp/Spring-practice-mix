@@ -1,4 +1,4 @@
-package synchronization.nonsync;
+package synchronization.syncMethod;
 
 public class Thread2 extends Thread{
     PrintTest test;

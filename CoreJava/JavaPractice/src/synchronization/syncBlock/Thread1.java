@@ -1,4 +1,4 @@
-package synchronization.nonsync;
+package synchronization.syncBlock;
 
 public class Thread1 extends Thread{
     PrintTest test;
@@ -9,6 +9,6 @@ public class Thread1 extends Thread{
 
     @Override
     public void run() {
-        test.printThread(1);
+        test.printTest(1);
     }
 }

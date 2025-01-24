@@ -1,8 +1,9 @@
-package synchronization.nonsync;
+package synchronization.syncBlock;
 
-public class SyncroTest {
+public class SyncBlockTest {
     public static void main(String[] args) {
         PrintTest p = new PrintTest();
+
         Thread1 t1 = new Thread1(p);
         Thread2 t2 = new Thread2(p);
 
