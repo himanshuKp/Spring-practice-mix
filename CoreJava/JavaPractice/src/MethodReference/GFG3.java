@@ -28,5 +28,5 @@ public class GFG3 {
                 .forEach(System.out::println);
 
         System.out.println();
-  }
+    }
 }
