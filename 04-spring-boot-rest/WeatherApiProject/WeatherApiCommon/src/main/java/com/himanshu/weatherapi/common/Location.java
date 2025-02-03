@@ -1,4 +1,4 @@
-package com.himanshu.weatherapicommon;
+package com.himanshu.weatherapi.common;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

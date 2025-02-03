@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.himanshu</groupId>
-    <artifactId>WeatherApiCommon</artifactId>
+    <artifactId>weather-api-common</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>WeatherApiCommon</name>
     <description>WeatherApiCommon</description>
@@ -47,6 +47,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
             </plugin>
         </plugins>
     </build>

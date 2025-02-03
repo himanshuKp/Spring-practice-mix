@@ -1,4 +1,4 @@
-package com.himanshu.weatherapiservice;
+package com.himanshu.weatherapi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
