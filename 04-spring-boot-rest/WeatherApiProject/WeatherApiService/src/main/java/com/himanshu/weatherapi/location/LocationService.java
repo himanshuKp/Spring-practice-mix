@@ -24,4 +24,17 @@ public class LocationService {
     public Location getLocationByCode(String code) {
         return locationRepository.findFirstByCode(code);
     }
+
+    public Location updateLocation(Location location) {
+        Location updatedLocation = locationRepository.findFirstByCode(location.getCode());
+        if (updatedLocation == null) {
+            throw new LocationDataNotFoundException("No location found with the location code: "+location.getCode());
+        }
+        updatedLocation.setCountryCode(location.getCountryCode());
+        updatedLocation.setCountryName(location.getCountryName());
+        updatedLocation.setRegionName(location.getRegionName());
+        updatedLocation.setCountryCode(location.getCountryCode());
+        updatedLocation.setEnabled(location.isEnabled());
+        return locationRepository.save(updatedLocation);
+    }
 }

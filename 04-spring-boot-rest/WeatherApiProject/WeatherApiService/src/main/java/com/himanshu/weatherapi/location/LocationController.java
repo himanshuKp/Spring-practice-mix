@@ -42,4 +42,14 @@ public class LocationController {
         }
         return ResponseEntity.ok(location);
     }
+
+    @PutMapping
+    public ResponseEntity<Location> updateLocation(@RequestBody @Valid Location location) {
+        try {
+            Location updatedLocation = locationService.updateLocation(location);
+            return ResponseEntity.ok(updatedLocation);
+        } catch (LocationDataNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

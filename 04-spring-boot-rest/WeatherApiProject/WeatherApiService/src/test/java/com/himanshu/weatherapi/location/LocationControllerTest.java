@@ -14,8 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -126,6 +125,42 @@ public class LocationControllerTest {
         Mockito.when(locationService.getLocationByCode("NYC_USA")).thenReturn(null);
         mockMvc.perform(get(REQUEST_URI))
                 .andExpect(status().isNoContent())
+                .andDo(print());
+    }
+
+    @Test
+    public void testUpdateShouldReturn200Ok() throws Exception {
+        Location location = new Location();
+        location.setCode("NYC_USA");
+        location.setCityName("New York");
+        location.setCountryCode("US");
+        location.setCountryName("United States of America");
+        location.setRegionName("New York");
+        location.setEnabled(true);
+
+        Mockito.when(locationService.updateLocation(location)).thenReturn(location);
+
+        mockMvc.perform(put(END_URI).contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(location)))
+                        .andExpect(status().isOk())
+                        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                        .andDo(print());
+    }
+
+    @Test
+    public void testUpdateShouldReturn204NoContent() throws Exception {
+        Location location = new Location();
+        location.setCode("NYC_USA");
+        location.setCityName("New York");
+        location.setCountryCode("US");
+        location.setCountryName("United States of America");
+        location.setRegionName("New York");
+        location.setEnabled(true);
+
+        Mockito.when(locationService.updateLocation(location)).thenThrow(new LocationDataNotFoundException("No content found"));
+
+        mockMvc.perform(put(END_URI).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(location)))
+                .andExpect(status().isNotFound())
                 .andDo(print());
     }
 }
