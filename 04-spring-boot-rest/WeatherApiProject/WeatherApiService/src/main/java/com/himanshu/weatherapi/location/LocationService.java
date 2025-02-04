@@ -20,4 +20,8 @@ public class LocationService {
     public List<Location> getAllUntarnishedLocations() {
         return locationRepository.findUntarnishedLocations();
     }
+
+    public Location getLocationByCode(String code) {
+        return locationRepository.findFirstByCode(code);
+    }
 }

@@ -97,4 +97,35 @@ public class LocationControllerTest {
                 .andExpect(jsonPath("$[1].city_name", is("Los Angeles")))
                 .andDo(print());
     }
+
+    @Test
+    public void testShouldReturn200FoundData() throws Exception {
+        String REQUEST_URI = "/v1/locations/NYC_USA";
+
+        Location location = new Location();
+        location.setCode("NYC_USA");
+        location.setCityName("New York");
+        location.setCountryCode("US");
+        location.setCountryName("United States");
+        location.setRegionName("New York");
+        location.setEnabled(true);
+
+        Mockito.when(locationService.getLocationByCode("NYC_USA")).thenReturn(location);
+
+        mockMvc.perform(get(REQUEST_URI))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.code", is("NYC_USA")))
+                .andExpect(jsonPath("$.city_name", is("New York")))
+                .andDo(print());
+    }
+
+    @Test
+    public void testShouldReturn204NoContentByCode() throws Exception {
+        String REQUEST_URI = "/v1/locations/NYC_USA";
+        Mockito.when(locationService.getLocationByCode("NYC_USA")).thenReturn(null);
+        mockMvc.perform(get(REQUEST_URI))
+                .andExpect(status().isNoContent())
+                .andDo(print());
+    }
 }
