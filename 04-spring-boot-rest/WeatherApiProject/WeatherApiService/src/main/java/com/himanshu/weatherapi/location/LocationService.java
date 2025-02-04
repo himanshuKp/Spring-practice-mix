@@ -18,6 +18,6 @@ public class LocationService {
     }
 
     public List<Location> getAllUntarnishedLocations() {
-        return locationRepository.findUntrashedLocations();
+        return locationRepository.findUntarnishedLocations();
     }
 }

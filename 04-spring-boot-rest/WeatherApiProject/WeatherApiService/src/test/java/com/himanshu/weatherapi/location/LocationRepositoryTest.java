@@ -32,7 +32,7 @@ public class LocationRepositoryTest {
 
     @Test
     public void testUntarnishedLocation() {
-        List<Location> locations = locationRepository.findUntrashedLocations();
+        List<Location> locations = locationRepository.findUntarnishedLocations();
 
         assert !locations.isEmpty();
         locations.forEach(System.out::println);
