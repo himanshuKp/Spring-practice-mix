@@ -1,25 +1,41 @@
 package com.himanshu.weatherapi.common;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
+import java.util.Objects;
 
 @Entity
 @Table(name = "locations")
 public class Location {
     @Column(length = 12, unique = true, nullable = false)
     @Id
+    @NotBlank
     private String code;
     @Column(length = 128, nullable = false)
+    @JsonProperty("city_name")
+    @NotBlank
     private String cityName;
     @Column(length = 128)
+    @JsonProperty("region_name")
+    @NotNull
     private String regionName;
     @Column(length = 64, nullable = false)
+    @JsonProperty("country_name")
+    @NotBlank
     private String countryName;
     @Column(length = 2, nullable = false)
+    @JsonProperty("country_code")
+    @NotBlank
     private String countryCode;
     private boolean enabled;
+    @JsonIgnore
     private boolean trashed;
 
     public String getCode() {
@@ -76,5 +92,16 @@ public class Location {
 
     public void setTrashed(boolean trashed) {
         this.trashed = trashed;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Location location)) return false;
+        return enabled == location.enabled && trashed == location.trashed && Objects.equals(code, location.code) && Objects.equals(cityName, location.cityName) && Objects.equals(regionName, location.regionName) && Objects.equals(countryName, location.countryName) && Objects.equals(countryCode, location.countryCode);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(code);
     }
 }
