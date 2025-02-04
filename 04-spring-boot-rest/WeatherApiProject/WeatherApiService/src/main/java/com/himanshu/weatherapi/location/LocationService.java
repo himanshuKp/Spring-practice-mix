@@ -37,4 +37,12 @@ public class LocationService {
         updatedLocation.setEnabled(location.isEnabled());
         return locationRepository.save(updatedLocation);
     }
+
+    public void deleteLocation(String code) {
+        Location location = locationRepository.findFirstByCode(code);
+        if (location == null) {
+            throw new LocationDataNotFoundException("No location found with the location code: "+code);
+        }
+        locationRepository.trashByCode(code);
+    }
 }

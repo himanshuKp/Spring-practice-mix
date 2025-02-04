@@ -148,7 +148,7 @@ public class LocationControllerTest {
     }
 
     @Test
-    public void testUpdateShouldReturn204NoContent() throws Exception {
+    public void testUpdateShouldReturn404NoContent() throws Exception {
         Location location = new Location();
         location.setCode("NYC_USA");
         location.setCityName("New York");
@@ -161,6 +161,28 @@ public class LocationControllerTest {
 
         mockMvc.perform(put(END_URI).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(location)))
                 .andExpect(status().isNotFound())
+                .andDo(print());
+    }
+
+    @Test
+    public void testDeleteShouldReturn404Ok() throws Exception {
+        String REQUEST_URI = "/v1/locations/NYC_USA";
+
+        Mockito.doThrow(LocationDataNotFoundException.class).when(locationService).deleteLocation("NYC_USA");
+
+        mockMvc.perform(delete(REQUEST_URI))
+                .andExpect(status().isNotFound())
+                .andDo(print());
+    }
+
+    @Test
+    public void testDeleteShouldReturn204NoContent() throws Exception {
+        String REQUEST_URI = "/v1/locations/NYC_USA";
+
+        Mockito.doNothing().when(locationService).deleteLocation("NYC_USA");
+
+        mockMvc.perform(delete(REQUEST_URI))
+                .andExpect(status().isNoContent())
                 .andDo(print());
     }
 }

@@ -2,6 +2,7 @@ package com.himanshu.weatherapi.location;
 
 import com.himanshu.weatherapi.common.Location;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -36,5 +37,12 @@ public class LocationRepositoryTest {
 
         assert !locations.isEmpty();
         locations.forEach(System.out::println);
+    }
+
+    @Test
+    public void testDeleteLocation() {
+        locationRepository.trashByCode("NYC_USA");
+        Location location = locationRepository.findFirstByCode("NYC_USA");
+        assert location == null;
     }
 }
