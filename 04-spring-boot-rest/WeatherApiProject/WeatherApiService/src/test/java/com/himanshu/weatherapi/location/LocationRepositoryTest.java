@@ -7,6 +7,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
 
+import java.util.List;
+
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Rollback(false)
@@ -26,5 +28,13 @@ public class LocationRepositoryTest {
 
         Location savedLocation = locationRepository.save(location);
         assert savedLocation.getCode().equalsIgnoreCase("NYC_USA");
+    }
+
+    @Test
+    public void testUntarnishedLocation() {
+        List<Location> locations = locationRepository.findUntrashedLocations();
+
+        assert !locations.isEmpty();
+        locations.forEach(System.out::println);
     }
 }

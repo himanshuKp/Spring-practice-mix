@@ -3,6 +3,8 @@ package com.himanshu.weatherapi.location;
 import com.himanshu.weatherapi.common.Location;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class LocationService {
     private final LocationRepository locationRepository;
@@ -13,5 +15,9 @@ public class LocationService {
 
     public Location addLocation(Location location) {
         return locationRepository.save(location);
+    }
+
+    public List<Location> getAllUntarnishedLocations() {
+        return locationRepository.findUntrashedLocations();
     }
 }

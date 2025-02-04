@@ -10,7 +10,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Collections;
+import java.util.List;
+
 import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -52,6 +56,45 @@ public class LocationControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.code", is("NYC_USA")))
                 .andExpect(header().string("Location", is("/v1/locations/NYC_USA")))
+                .andDo(print());
+    }
+
+    @Test
+    public void testShouldReturn204NoContent() throws Exception {
+        Mockito.when(locationService.getAllUntarnishedLocations()).thenReturn(Collections.emptyList());
+
+        mockMvc.perform(get(END_URI))
+                .andExpect(status().isNoContent())
+                .andDo(print());
+    }
+
+    @Test
+    public void testShouldReturn200Ok() throws Exception {
+        Location location1 = new Location();
+        location1.setCode("NYC_USA");
+        location1.setCityName("New York");
+        location1.setCountryCode("US");
+        location1.setCountryName("United States");
+        location1.setRegionName("New York");
+        location1.setEnabled(true);
+
+        Location location2 = new Location();
+        location2.setCode("LACA_USA");
+        location2.setCityName("Los Angeles");
+        location2.setCountryCode("US");
+        location2.setCountryName("California");
+        location2.setRegionName("Los Angeles");
+        location2.setEnabled(true);
+
+        Mockito.when(locationService.getAllUntarnishedLocations()).thenReturn(List.of(location1, location2));
+
+        mockMvc.perform(get(END_URI))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].code", is("NYC_USA")))
+                .andExpect(jsonPath("$[0].city_name", is("New York")))
+                .andExpect(jsonPath("$[1].code", is("LACA_USA")))
+                .andExpect(jsonPath("$[1].city_name", is("Los Angeles")))
                 .andDo(print());
     }
 }

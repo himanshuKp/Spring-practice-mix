@@ -1,6 +1,12 @@
 package com.himanshu.weatherapi.location;
 
 import com.himanshu.weatherapi.common.Location;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-public interface LocationRepository extends CrudRepository<Location, String> {}
+import java.util.List;
+
+public interface LocationRepository extends CrudRepository<Location, String> {
+    @Query("SELECT l from Location l where l.trashed = false")
+    public List<Location> findUntrashedLocations();
+}

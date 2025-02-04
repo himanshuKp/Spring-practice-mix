@@ -6,9 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
-@RequestMapping
+@RequestMapping(value = "/v1/locations")
 public class LocationController {
     private final LocationService locationService;
 
@@ -16,11 +17,20 @@ public class LocationController {
         this.locationService = locationService;
     }
 
-    @PostMapping(value = "/v1/locations")
+    @PostMapping
     public ResponseEntity<Location> save(@RequestBody @Valid Location location) {
         Location savedLocation = locationService.addLocation(location);
         URI locationURI =
                 URI.create("/v1/locations/"+savedLocation.getCode());
         return ResponseEntity.created(locationURI).body(savedLocation);
+    }
+
+    @GetMapping
+    public ResponseEntity<?> findUntarnishedLocations() {
+        List<Location> untarnishedLocations = locationService.getAllUntarnishedLocations();
+        if(untarnishedLocations.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(untarnishedLocations);
     }
 }
