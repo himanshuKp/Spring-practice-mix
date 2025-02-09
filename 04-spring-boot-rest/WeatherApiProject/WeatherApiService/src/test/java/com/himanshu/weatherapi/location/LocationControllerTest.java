@@ -2,6 +2,7 @@ package com.himanshu.weatherapi.location;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.himanshu.weatherapi.common.Location;
+import com.himanshu.weatherapi.dto.ErrorDTO;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.Collections;
 import java.util.List;
@@ -56,6 +58,46 @@ public class LocationControllerTest {
                 .andExpect(jsonPath("$.code", is("NYC_USA")))
                 .andExpect(header().string("Location", is("/v1/locations/NYC_USA")))
                 .andDo(print());
+    }
+
+    @Test
+    public void testValidationRequestBodyLocationCodeLength() throws Exception {
+        Location location = new Location();
+        location.setCityName("New York");
+        location.setCountryCode("US");
+        location.setCountryName("United States");
+        location.setRegionName("New York");
+        location.setEnabled(true);
+
+        String bodyContent = mapper.writeValueAsString(location);
+
+        mockMvc.perform(post(END_URI).contentType(MediaType.APPLICATION_JSON).content(bodyContent))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.error[0]", is("Location code cannot be null")))
+                .andDo(print());
+    }
+
+    @Test
+    public void testValidationRequestBodyAllFieldsInvalid() throws Exception {
+        Location location = new Location();
+        location.setRegionName("");
+
+        String bodyContent = mapper.writeValueAsString(location);
+
+        MvcResult result = mockMvc.perform(post(END_URI).contentType(MediaType.APPLICATION_JSON).content(bodyContent))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andReturn();
+
+        String responseBody = result.getResponse().getContentAsString();
+
+        assert responseBody.contains("Location code cannot be null");
+        assert responseBody.contains("Country name cannot be null");
+        assert responseBody.contains("Country code cannot be null");
+        assert responseBody.contains("City name cannot be null");
+        assert responseBody.contains("Region name must have 3-128 characters");
     }
 
     @Test
