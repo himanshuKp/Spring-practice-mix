@@ -1,12 +1,14 @@
 package com.himanshu.weatherapi.dto;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class ErrorDTO {
     private Date timestamp;
-    private String error;
     private int status;
     private String path;
+    private List<String> error;
 
     public Date getTimestamp() {
         return timestamp;
@@ -14,14 +16,6 @@ public class ErrorDTO {
 
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
-    }
-
-    public String getError() {
-        return error;
-    }
-
-    public void setError(String error) {
-        this.error = error;
     }
 
     public int getStatus() {
@@ -38,5 +32,16 @@ public class ErrorDTO {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public List<String> getError() {
+        return error;
+    }
+
+    public void addError(String error) {
+        if (this.error == null) {
+            this.error = new ArrayList<>();
+        }
+        this.error.add(error);
     }
 }
