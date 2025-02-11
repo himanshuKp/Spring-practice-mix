@@ -12,7 +12,7 @@ import java.util.Date;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Rollback(value = false)
-public class RealtimeWeatherTest {
+public class RealtimeWeatherRepositoryTest {
     @Autowired
     private RealtiimeWeatherRepository realtiimeWeatherRepository;
 
