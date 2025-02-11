@@ -3,6 +3,7 @@ package com.himanshu.weatherapi.common;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Table(name = "realtime_weather")
@@ -80,5 +81,38 @@ public class RealtimeWeather {
 
     public void setLastUpdated(Date lastUpdated) {
         this.lastUpdated = lastUpdated;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof RealtimeWeather that)) return false;
+        return temperature == that.temperature && humidity == that.humidity && precipitation == that.precipitation && windSpeed == that.windSpeed && Objects.equals(locationCode, that.locationCode) && Objects.equals(status, that.status) && Objects.equals(lastUpdated, that.lastUpdated) && Objects.equals(location, that.location);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(locationCode, temperature, humidity, precipitation, windSpeed, status, lastUpdated, location);
+    }
+
+    @Override
+    public String toString() {
+        return "RealtimeWeather{" +
+                "locationCode='" + locationCode + '\'' +
+                ", temperature=" + temperature +
+                ", humidity=" + humidity +
+                ", precipitation=" + precipitation +
+                ", windSpeed=" + windSpeed +
+                ", status='" + status + '\'' +
+                ", lastUpdated=" + lastUpdated +
+                ", location=" + location +
+                '}';
     }
 }

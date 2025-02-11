@@ -103,10 +103,18 @@ public class Location {
         this.trashed = trashed;
     }
 
+    public RealtimeWeather getRealtimeWeather() {
+        return realtimeWeather;
+    }
+
+    public void setRealtimeWeather(RealtimeWeather realtimeWeather) {
+        this.realtimeWeather = realtimeWeather;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Location location)) return false;
-        return enabled == location.enabled && trashed == location.trashed && Objects.equals(code, location.code) && Objects.equals(cityName, location.cityName) && Objects.equals(regionName, location.regionName) && Objects.equals(countryName, location.countryName) && Objects.equals(countryCode, location.countryCode);
+        return enabled == location.enabled && trashed == location.trashed && Objects.equals(code, location.code) && Objects.equals(cityName, location.cityName) && Objects.equals(regionName, location.regionName) && Objects.equals(countryName, location.countryName) && Objects.equals(countryCode, location.countryCode) && Objects.equals(realtimeWeather, location.realtimeWeather);
     }
 
     @Override
@@ -124,6 +132,7 @@ public class Location {
                 ", countryCode='" + countryCode + '\'' +
                 ", enabled=" + enabled +
                 ", trashed=" + trashed +
+                ", realtimeWeather=" + realtimeWeather +
                 '}';
     }
 }

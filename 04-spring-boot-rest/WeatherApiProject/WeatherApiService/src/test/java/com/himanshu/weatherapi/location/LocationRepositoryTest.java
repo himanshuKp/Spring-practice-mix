@@ -1,13 +1,16 @@
 package com.himanshu.weatherapi.location;
 
 import com.himanshu.weatherapi.common.Location;
+import com.himanshu.weatherapi.common.RealtimeWeather;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.test.annotation.Rollback;
 
+import java.util.Date;
 import java.util.List;
 
 @DataJpaTest
@@ -44,5 +47,29 @@ public class LocationRepositoryTest {
         locationRepository.trashByCode("NYC_USA");
         Location location = locationRepository.findFirstByCode("NYC_USA");
         assert location == null;
+    }
+
+    @Test
+    public void testAddRealtimeWeatherData(){
+        String code = "DELHI_IND";
+
+        Location location = locationRepository.findFirstByCode(code);
+
+        RealtimeWeather realtimeWeather = location.getRealtimeWeather();
+
+        if (realtimeWeather == null) {
+            realtimeWeather = new RealtimeWeather();
+            realtimeWeather.setLocation(location);
+            location.setRealtimeWeather(realtimeWeather);
+        }
+        realtimeWeather.setHumidity(40);
+        realtimeWeather.setStatus("Sunny");
+        realtimeWeather.setTemperature(40);
+        realtimeWeather.setWindSpeed(20);
+        realtimeWeather.setPrecipitation(50);
+        realtimeWeather.setLastUpdated(new Date());
+        Location updatedLocation = locationRepository.save(location);
+
+        assert updatedLocation.getRealtimeWeather().getLocationCode().equalsIgnoreCase(code);
     }
 }
