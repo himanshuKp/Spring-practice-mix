@@ -35,4 +35,22 @@ public class RealtimeWeatherRepositoryTest {
         RealtimeWeather updatedRealtimeWeather = realtimeWeatherRepository.save(realtimeWeather);
         assert updatedRealtimeWeather.getTemperature() == 80 : "Temperature should be equal to 80";
     }
+
+    @Test
+    public void testFindRealtimeWeatherByCountryCodeAndCityFailed() {
+        String countryCode = "US";
+        String city = "NYC";
+
+        RealtimeWeather realtimeWeather = realtimeWeatherRepository.findByCityNameAndCountryCode(city, countryCode);
+        assert realtimeWeather == null;
+    }
+
+    @Test
+    public void testFindRealtimeWeatherByCountryCodeAndCity() {
+        String countryCode = "IN";
+        String cityName = "New Delhi";
+        RealtimeWeather realtimeWeather = realtimeWeatherRepository.findByCityNameAndCountryCode(cityName, countryCode);
+        assert realtimeWeather != null;
+        assert realtimeWeather.getLocation().getCityName().equals(cityName);
+    }
 }

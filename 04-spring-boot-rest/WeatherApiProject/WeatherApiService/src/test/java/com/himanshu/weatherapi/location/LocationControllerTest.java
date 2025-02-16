@@ -2,7 +2,6 @@ package com.himanshu.weatherapi.location;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.himanshu.weatherapi.common.Location;
-import com.himanshu.weatherapi.dto.ErrorDTO;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;

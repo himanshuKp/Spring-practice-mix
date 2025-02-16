@@ -12,7 +12,7 @@ public class CommonUtility {
         if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getRemoteHost();
         }
-        logger.info("getIpAddress: " + ip);
+        logger.info("getIpAddress: {}", ip);
         return ip;
     }
 }
