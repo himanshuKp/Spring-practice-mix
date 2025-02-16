@@ -45,6 +45,7 @@ public class Location {
 
     @OneToOne(mappedBy = "location", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
+    @JsonIgnore
     private RealtimeWeather realtimeWeather;
 
     public Location() {
@@ -122,10 +123,15 @@ public class Location {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof Location location)) return false;
-        return enabled == location.enabled && trashed == location.trashed && Objects.equals(code, location.code) && Objects.equals(cityName, location.cityName) && Objects.equals(regionName, location.regionName) && Objects.equals(countryName, location.countryName) && Objects.equals(countryCode, location.countryCode) && Objects.equals(realtimeWeather, location.realtimeWeather);
-    }
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Location other = (Location) obj;
+        return Objects.equals(code, other.code); }
 
     @Override
     public int hashCode() {
@@ -142,7 +148,6 @@ public class Location {
                 ", countryCode='" + countryCode + '\'' +
                 ", enabled=" + enabled +
                 ", trashed=" + trashed +
-                ", realtimeWeather=" + realtimeWeather +
                 '}';
     }
 }

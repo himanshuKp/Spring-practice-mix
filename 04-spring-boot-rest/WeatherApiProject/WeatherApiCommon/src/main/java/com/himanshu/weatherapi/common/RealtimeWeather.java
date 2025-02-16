@@ -1,5 +1,6 @@
 package com.himanshu.weatherapi.common;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -20,6 +21,7 @@ public class RealtimeWeather {
     @Column(length = 50)
     private String status;
 
+    @JsonProperty("last_updated")
     private Date lastUpdated;
 
     @OneToOne
@@ -99,7 +101,7 @@ public class RealtimeWeather {
 
     @Override
     public int hashCode() {
-        return Objects.hash(locationCode, temperature, humidity, precipitation, windSpeed, status, lastUpdated, location);
+        return Objects.hash(locationCode);
     }
 
     @Override
