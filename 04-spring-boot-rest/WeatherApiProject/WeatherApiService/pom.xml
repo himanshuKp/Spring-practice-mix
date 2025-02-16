@@ -68,6 +68,11 @@
 			<artifactId>hamcrest-library</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.ip2location</groupId>
+			<artifactId>ip2location-java</artifactId>
+			<version>8.12.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>

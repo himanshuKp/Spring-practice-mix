@@ -14,13 +14,13 @@ import java.util.Date;
 @Rollback(value = false)
 public class RealtimeWeatherRepositoryTest {
     @Autowired
-    private RealtiimeWeatherRepository realtiimeWeatherRepository;
+    private RealtimeWeatherRepository realtimeWeatherRepository;
 
     @Test
     public void testUpdateRealtimeWeather() {
         String location = "DELHI_IND";
-        RealtimeWeather realtimeWeather = realtiimeWeatherRepository.findById(location).isPresent() ?
-                realtiimeWeatherRepository.findById(location).get() :
+        RealtimeWeather realtimeWeather = realtimeWeatherRepository.findById(location).isPresent() ?
+                realtimeWeatherRepository.findById(location).get() :
                 null;
 
         assert realtimeWeather != null;
@@ -32,7 +32,7 @@ public class RealtimeWeatherRepositoryTest {
         realtimeWeather.setPrecipitation(50);
         realtimeWeather.setLastUpdated(new Date());
 
-        RealtimeWeather updatedRealtimeWeather = realtiimeWeatherRepository.save(realtimeWeather);
+        RealtimeWeather updatedRealtimeWeather = realtimeWeatherRepository.save(realtimeWeather);
         assert updatedRealtimeWeather.getTemperature() == 80 : "Temperature should be equal to 80";
     }
 }
