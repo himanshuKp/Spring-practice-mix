@@ -3,6 +3,7 @@ package com.himanshu.weatherapi.common;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import org.hibernate.validator.constraints.Range;
 
 import java.util.Date;
 import java.util.Objects;
@@ -12,8 +13,10 @@ import java.util.Objects;
 public class RealtimeWeather {
     @Id
     @Column(name = "location_code")
+    @JsonIgnore
     private String locationCode;
 
+    @Range(min = -60, max = 60, message = "Temperature must be in the range -60 to 60 Celsius degree")
     private int temperature;
     private int humidity;
     private int precipitation;
@@ -23,11 +26,13 @@ public class RealtimeWeather {
     private String status;
 
     @JsonProperty("last_updated")
+    @JsonIgnore
     private Date lastUpdated;
 
     @OneToOne
     @JoinColumn(name = "location_code")
     @MapsId
+    @JsonIgnore
     private Location location;
 
     public String getLocationCode() {
