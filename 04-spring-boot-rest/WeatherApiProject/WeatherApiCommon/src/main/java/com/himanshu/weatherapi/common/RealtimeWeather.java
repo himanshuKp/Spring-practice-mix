@@ -1,5 +1,6 @@
 package com.himanshu.weatherapi.common;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
@@ -94,14 +95,20 @@ public class RealtimeWeather {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof RealtimeWeather that)) return false;
-        return temperature == that.temperature && humidity == that.humidity && precipitation == that.precipitation && windSpeed == that.windSpeed && Objects.equals(locationCode, that.locationCode) && Objects.equals(status, that.status) && Objects.equals(lastUpdated, that.lastUpdated) && Objects.equals(location, that.location);
+    public int hashCode() {
+        return Objects.hash(locationCode);
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(locationCode);
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        RealtimeWeather other = (RealtimeWeather) obj;
+        return Objects.equals(locationCode, other.locationCode);
     }
 
     @Override
