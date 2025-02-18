@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 
 public class IP2LocationTest {
-    private String DBPath = "ip2locdb/IP2LOCATION-LITE-DB3.BIN";
+    private String DBPath = "../ip2locdb/IP2LOCATION-LITE-DB3.BIN";
 
     @Test
     public void testIP2InvalidLocation() throws IOException {

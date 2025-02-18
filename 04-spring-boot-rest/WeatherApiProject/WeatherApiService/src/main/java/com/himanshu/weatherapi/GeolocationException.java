@@ -1,4 +1,4 @@
-package com.himanshu.weatherapi.realtime;
+package com.himanshu.weatherapi;
 
 public class GeolocationException extends RuntimeException {
     public GeolocationException(String message) {

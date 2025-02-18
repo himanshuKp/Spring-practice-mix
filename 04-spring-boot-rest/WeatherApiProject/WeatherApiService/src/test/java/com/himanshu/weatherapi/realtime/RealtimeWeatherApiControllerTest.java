@@ -1,6 +1,8 @@
 package com.himanshu.weatherapi.realtime;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.himanshu.weatherapi.GeolocationException;
+import com.himanshu.weatherapi.GeolocationService;
 import com.himanshu.weatherapi.common.Location;
 import com.himanshu.weatherapi.common.RealtimeWeather;
 import com.himanshu.weatherapi.location.LocationDataNotFoundException;
@@ -59,6 +61,7 @@ public class RealtimeWeatherApiControllerTest {
     public void testGetShouldReturn200Ok() throws Exception {
         Location location = new Location();
         location.setCode("DELHI_IND");
+        location.setCityName("Delhi");
         location.setRegionName("Delhi");
         location.setCountryCode("IN");
         location.setCountryName("India");

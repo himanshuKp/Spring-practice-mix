@@ -1,4 +1,4 @@
-package com.himanshu.weatherapi.realtime;
+package com.himanshu.weatherapi;
 
 import com.himanshu.weatherapi.common.Location;
 import com.ip2location.IP2Location;
