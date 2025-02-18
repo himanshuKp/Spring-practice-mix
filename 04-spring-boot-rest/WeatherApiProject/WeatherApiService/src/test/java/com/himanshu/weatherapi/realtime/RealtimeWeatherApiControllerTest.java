@@ -6,7 +6,9 @@ import com.himanshu.weatherapi.GeolocationService;
 import com.himanshu.weatherapi.common.Location;
 import com.himanshu.weatherapi.common.RealtimeWeather;
 import com.himanshu.weatherapi.location.LocationDataNotFoundException;
+import org.apiguardian.api.API;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -15,8 +17,6 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import static org.hamcrest.Matchers.is;
 
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -60,20 +60,19 @@ public class RealtimeWeatherApiControllerTest {
     @Test
     public void testGetShouldReturn200Ok() throws Exception {
         Location location = new Location();
-        location.setCode("DELHI_IND");
-        location.setCityName("Delhi");
-        location.setRegionName("Delhi");
-        location.setCountryCode("IN");
-        location.setCountryName("India");
-        location.setEnabled(true);
+        location.setCode("SFCA_USA");
+        location.setCityName("San Franciso");
+        location.setRegionName("California");
+        location.setCountryName("United States of America");
+        location.setCountryCode("US");
 
         RealtimeWeather realtimeWeather = new RealtimeWeather();
-        realtimeWeather.setPrecipitation(33);
-        realtimeWeather.setTemperature(27);
-        realtimeWeather.setHumidity(29);
-        realtimeWeather.setWindSpeed(22);
+        realtimeWeather.setTemperature(12);
+        realtimeWeather.setHumidity(32);
         realtimeWeather.setLastUpdated(new Date());
-        realtimeWeather.setStatus("Windy");
+        realtimeWeather.setPrecipitation(88);
+        realtimeWeather.setStatus("Cloudy");
+        realtimeWeather.setWindSpeed(5);
 
         realtimeWeather.setLocation(location);
         location.setRealtimeWeather(realtimeWeather);
@@ -82,6 +81,46 @@ public class RealtimeWeatherApiControllerTest {
         Mockito.when(realtimeWeatherService.getRealtimeWeatherByLocation(location)).thenReturn(realtimeWeather);
 
         mockMvc.perform(get(API_URL))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andDo(print());
+    }
+
+    @Test
+    public void testGetByLocationCodeShouldReturnStatus404NotFound() throws Exception {
+        String locationCode = "SFCA_USA";
+        Mockito.when(realtimeWeatherService.getRealtimeByLocationCode(locationCode)).thenThrow(LocationDataNotFoundException.class);
+
+        String URL_PATH = API_URL + "/" + locationCode;
+
+        mockMvc.perform(get(URL_PATH))
+                .andExpect(status().isNotFound())
+                .andDo(print());
+    }
+
+    @Test
+    public void testGetByLocationCodeShouldReturn200Ok() throws Exception {
+        Location location = new Location();
+        location.setCode("SFCA_USA");
+        location.setCityName("San Franciso");
+        location.setRegionName("California");
+        location.setCountryName("United States of America");
+        location.setCountryCode("US");
+        RealtimeWeather realtimeWeather = new RealtimeWeather();
+        realtimeWeather.setTemperature(12);
+        realtimeWeather.setHumidity(32);
+        realtimeWeather.setLastUpdated(new Date());
+        realtimeWeather.setPrecipitation(88);
+        realtimeWeather.setStatus("Cloudy");
+        realtimeWeather.setWindSpeed(5);
+        realtimeWeather.setLocation(location);
+        location.setRealtimeWeather(realtimeWeather);
+
+        Mockito.when(geolocationService.getLocation(Mockito.anyString())).thenReturn(location);
+        Mockito.when(realtimeWeatherService.getRealtimeByLocationCode(location.getCode())).thenReturn(realtimeWeather);
+
+        String URL_PATH = API_URL + "/" + location.getCode();
+        mockMvc.perform(get(URL_PATH))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andDo(print());

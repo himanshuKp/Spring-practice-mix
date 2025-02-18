@@ -24,4 +24,12 @@ public class RealtimeWeatherService {
         }
         return realtimeWeather;
     }
+
+    public RealtimeWeather getRealtimeByLocationCode(String locationCode) {
+        RealtimeWeather realtimeWeather = realtimeWeatherRepository.findByLocationCode(locationCode);
+        if (realtimeWeather == null) {
+            throw new LocationDataNotFoundException("No location data found for " + locationCode);
+        }
+        return realtimeWeather;
+    }
 }

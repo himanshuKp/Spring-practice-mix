@@ -7,4 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 public interface RealtimeWeatherRepository extends CrudRepository<RealtimeWeather, String> {
     @Query("SELECT r FROM RealtimeWeather r WHERE r.location.cityName=?1 AND r.location.countryCode=?2")
     public RealtimeWeather findByCityNameAndCountryCode(String cityName, String countryCode);
+
+    @Query("SELECT r FROM RealtimeWeather r WHERE r.locationCode=?1 AND r.location.trashed=FALSE")
+    public RealtimeWeather findByLocationCode(String locationCode);
 }

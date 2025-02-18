@@ -1,7 +1,9 @@
 package com.himanshu.weatherapi.realtime;
 
 import com.himanshu.weatherapi.common.RealtimeWeather;
+import com.himanshu.weatherapi.location.LocationDataNotFoundException;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -48,9 +50,30 @@ public class RealtimeWeatherRepositoryTest {
     @Test
     public void testFindRealtimeWeatherByCountryCodeAndCity() {
         String countryCode = "IN";
-        String cityName = "New Delhi";
+        String cityName = "Delhi";
         RealtimeWeather realtimeWeather = realtimeWeatherRepository.findByCityNameAndCountryCode(cityName, countryCode);
         assert realtimeWeather != null;
         assert realtimeWeather.getLocation().getCityName().equals(cityName);
+    }
+
+    @Test
+    public void testFindByLocationNotFound() {
+        String location = "XYZ_IND";
+        RealtimeWeather realtimeWeather = realtimeWeatherRepository.findByLocationCode(location);
+        assert realtimeWeather == null;
+    }
+
+    @Test
+    public void testFindByTrashedLocationNotFound() {
+        String location = "NYC_USA";
+        RealtimeWeather realtimeWeather = realtimeWeatherRepository.findByLocationCode(location);
+        assert realtimeWeather == null;
+    }
+
+    @Test
+    public void testFindByLocationFound() {
+        String location = "DELHI_IND";
+        RealtimeWeather realtimeWeather = realtimeWeatherRepository.findByLocationCode(location);
+        assert realtimeWeather != null;
     }
 }
