@@ -1,5 +1,6 @@
 package com.himanshu.weatherapi.location;
 
+import com.himanshu.weatherapi.common.HourlyWeather;
 import com.himanshu.weatherapi.common.Location;
 import com.himanshu.weatherapi.common.RealtimeWeather;
 import org.junit.jupiter.api.Test;
@@ -10,8 +11,11 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.test.annotation.Rollback;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
+
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -50,7 +54,7 @@ public class LocationRepositoryTest {
     }
 
     @Test
-    public void testAddRealtimeWeatherData(){
+    public void testAddRealtimeWeatherData() {
         String code = "DELHI_IND";
 
         Location location = locationRepository.findFirstByCode(code);
@@ -71,5 +75,32 @@ public class LocationRepositoryTest {
         Location updatedLocation = locationRepository.save(location);
 
         assert updatedLocation.getRealtimeWeather().getLocationCode().equalsIgnoreCase(code);
+    }
+    
+    @Test
+    public void testAddHourlyWeatherData() {
+        Optional<Location> location = locationRepository.findById("DELHI_IND");
+        assert location.isPresent();
+
+        List<HourlyWeather> listHourlyWeather = location.get().getHourlyWeatherList();
+
+        HourlyWeather forecast1 = new HourlyWeather().hourOfDay(10)
+                                                .location(location.get())
+                                                .precipitation(10)
+                                                .temperature(44)
+                                                .status("Sunny");
+                                                
+        HourlyWeather forecast2 = new HourlyWeather().hourOfDay(11)
+                                                .location(location.get())
+                                                .precipitation(22)
+                                                .temperature(45)
+                                                .status("Sunny");
+
+        listHourlyWeather.add(forecast1);
+        listHourlyWeather.add(forecast2);
+
+        Location updatedLocation = locationRepository.save(location.get());
+
+        assert !updatedLocation.getHourlyWeatherList().isEmpty();
     }
 }

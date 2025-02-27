@@ -135,6 +135,11 @@ public class Location {
         this.hourlyWeatherList = hourlyWeatherList;
     }
 
+    public Location locationCode(String locationCode) {
+        setCode(locationCode);
+        return this;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
