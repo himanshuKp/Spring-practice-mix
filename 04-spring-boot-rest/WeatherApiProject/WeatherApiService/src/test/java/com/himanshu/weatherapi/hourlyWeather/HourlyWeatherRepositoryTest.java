@@ -25,10 +25,10 @@ public class HourlyWeatherRepositoryTest {
 
   @Test
   public void testAdd() {
-    String locaionCode = "DELHI_IND";
+    String locationCode = "DELHI_IND";
     int hourOfDay = 12;
 
-    Location location = new Location().locationCode(locaionCode);
+    Location location = new Location().locationCode(locationCode);
 
     HourlyWeather forecast1 = new HourlyWeather().hourOfDay(hourOfDay)
         .location(location)
