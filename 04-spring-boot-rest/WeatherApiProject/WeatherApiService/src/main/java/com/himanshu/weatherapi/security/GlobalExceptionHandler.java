@@ -1,5 +1,6 @@
 package com.himanshu.weatherapi.security;
 
+import com.himanshu.weatherapi.BadRequestException;
 import com.himanshu.weatherapi.dto.ErrorDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -34,6 +35,20 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         log.error(ex.getMessage(), ex);
         return errorDTO;
+    }
+    
+    @ExceptionHandler(BadRequestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ErrorDTO handleBadRequestException(HttpServletRequest request, Exception ex) {
+    	ErrorDTO errorDTO = new ErrorDTO();
+    	errorDTO.setTimestamp(new Date());
+    	errorDTO.addError(ex.getMessage());
+    	errorDTO.setPath(request.getServletPath());
+    	errorDTO.setStatus(HttpStatus.BAD_REQUEST.value());
+    	
+    	log.error(ex.getMessage(), ex);
+    	return errorDTO;
     }
 
     @Override

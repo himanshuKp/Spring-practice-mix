@@ -1,5 +1,6 @@
 package com.himanshu.weatherapi.hourlyWeather;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -42,5 +43,9 @@ public class HourlyWeatherService {
 		}
 		
 		return hourlyWeatherRepsitory.findByLocationCode(code, hourOfDay);
+	}
+	
+	public List<HourlyWeather> updateHourlyWeatherData(String locationCode, List<HourlyWeather> hourlyWeathers){
+		return Collections.emptyList();
 	}
 }

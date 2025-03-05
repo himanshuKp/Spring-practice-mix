@@ -4,10 +4,12 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.springframework.http.MediaType;
 import java.util.Collections;
 import java.util.List;
 
@@ -17,9 +19,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.himanshu.weatherapi.GeolocationException;
 import com.himanshu.weatherapi.GeolocationService;
 import com.himanshu.weatherapi.common.HourlyWeather;
+import com.himanshu.weatherapi.common.HourlyWeatherDTO;
 import com.himanshu.weatherapi.common.Location;
 import com.himanshu.weatherapi.location.LocationDataNotFoundException;
 
@@ -29,6 +33,8 @@ public class HourlyWeatherApiControllerTest {
 	private static final String X_CURRENT_HOUR = "X-Current-Hour";
 	
 	@Autowired MockMvc mockMvc;
+	@Autowired private ObjectMapper objectMapper;
+	
 	@MockitoBean private HourlyWeatherService hourlyWeatherService;
 	@MockitoBean private GeolocationService geolocationService;
 	
@@ -168,4 +174,17 @@ public class HourlyWeatherApiControllerTest {
 		.andDo(print());
 	}
 
+	@Test
+	public void testUpdateWeatherService404BadRequest() throws Exception {
+		String locationCode = "NEW_YORK";
+		String requestUri = END_POINT_PATH+"/"+locationCode;
+		
+		 List<HourlyWeatherDTO> hourlyWeatherDTOs = Collections.emptyList();
+		 
+		 String requestBodyDTO = objectMapper.writeValueAsString(hourlyWeatherDTOs);
+		 
+		 mockMvc.perform(put(requestUri).contentType(MediaType.APPLICATION_JSON).content(requestBodyDTO))
+		 .andExpect(status().isBadRequest())
+		 .andDo(print());
+	}
 }
