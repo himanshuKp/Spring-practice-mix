@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -95,7 +96,76 @@ public class HourlyWeatherApiControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.location", is(expectedPath)))
 		.andExpect(jsonPath("$.hourly_forecast[0].hour_of_day", is(10)))
-		.andDo(print());
-		
+		.andDo(print());		
 	}
+	
+	@Test
+	public void testGetByCodeShouldReturn400BadRequest() throws Exception {
+		mockMvc.perform(get(END_POINT_PATH+"/DELHI_IND").header(X_CURRENT_HOUR, "as"))
+					.andExpect(status().isBadRequest())
+					.andDo(print());
+	}
+	
+	@Test
+	public void testGetByCodeShouldReturn404NotFound() throws Exception {
+		String locationCode = "DELHI_IND";
+		int currentHour = 9;
+		
+		when(hourlyWeatherService.getByLocationCode(locationCode, currentHour)).thenThrow(LocationDataNotFoundException.class);
+		
+		mockMvc.perform(get(END_POINT_PATH+"/"+locationCode).header(X_CURRENT_HOUR, currentHour))
+		.andExpect(status().isNotFound())
+		.andDo(print());
+	}
+	
+	@Test
+	public void testGetByCodeShouldReturn204NoContent() throws Exception {
+		String locationCode = "DELHI_IND";
+		int currentHour = 9;
+		String requestUri = END_POINT_PATH+"/"+locationCode;
+		
+		when(hourlyWeatherService.getByLocationCode(locationCode, currentHour)).thenReturn(Collections.emptyList());
+		
+		mockMvc.perform(get(requestUri).header(X_CURRENT_HOUR, currentHour))
+		.andExpect(status().isNoContent())
+		.andDo(print());
+	}
+	
+	@Test
+	public void testGetByCodeShouldReturn200Ok() throws Exception {
+		String locationCode = "NEW_YORK";
+		int currentHour = 9;
+		String requestUri = END_POINT_PATH+"/"+locationCode;
+		
+		Location location = new Location();
+		location.setCode(locationCode);
+		location.setCityName("New York City");
+		location.setRegionName("New York");
+		location.setCountryCode("US");
+		location.setCountryName("United States of America");
+		
+		HourlyWeather forecast1 = new HourlyWeather()
+				.location(location)
+				.hourOfDay(10)
+				.temperature(13)
+				.precipitation(70)
+				.status("Cloudy");		
+		
+		HourlyWeather forecast2 = new HourlyWeather()
+				.location(location)
+				.hourOfDay(11)
+				.temperature(15)
+				.precipitation(60)
+				.status("Sunny");		
+		
+		when(hourlyWeatherService.getByLocationCode(locationCode, currentHour)).thenReturn(List.of(forecast1, forecast2));
+		
+		String expectedPath = location.toString();
+		
+		mockMvc.perform(get(requestUri).header(X_CURRENT_HOUR, currentHour))
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.location", is(expectedPath)))
+		.andDo(print());
+	}
+
 }

@@ -33,4 +33,14 @@ public class HourlyWeatherService {
 		
 		return  hourlyWeatherRepsitory.findByLocationCode(locationInDB.getCode(), hourOfDay);
 	}
+	
+	public List<HourlyWeather> getByLocationCode(String code, int hourOfDay){
+		Location locationInDB = locationRepository.findByLocationCode(code);
+		
+		if(locationInDB==null) {
+			throw new LocationDataNotFoundException("No location found with the given location code");
+		}
+		
+		return hourlyWeatherRepsitory.findByLocationCode(code, hourOfDay);
+	}
 }
