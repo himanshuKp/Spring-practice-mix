@@ -175,7 +175,7 @@ public class HourlyWeatherApiControllerTest {
 	}
 
 	@Test
-	public void testUpdateWeatherService404BadRequest() throws Exception {
+	public void testUpdateWeatherService404BadRequestNoData() throws Exception {
 		String locationCode = "NEW_YORK";
 		String requestUri = END_POINT_PATH+"/"+locationCode;
 		
