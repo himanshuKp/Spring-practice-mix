@@ -5,39 +5,46 @@ package dsa.arrays;
 * arr[j]] such that i != j and arr[i] + arr[j] == 0.
 * */
 
-import java.awt.*;
 import java.util.*;
-import java.util.List;
 
 public class Problem9 {
     public static void main(String[] args) {
         int[] arr1 = {6, 1, 8, 0, 4, -9, -1, -10, -6, -5};
-        List<List<Integer>> result1 = findUniqueZeroSumPairs(arr1);
+        ArrayList<ArrayList<Integer>> result1 = findUniqueZeroSumPairs(arr1);
         System.out.println(result1);
     }
 
-    private static List<List<Integer>> findUniqueZeroSumPairs(int[] arr) {
-        List<List<Integer>> result = new ArrayList<>();
+    private static ArrayList<ArrayList<Integer>> findUniqueZeroSumPairs(int[] arr) {
+        ArrayList<ArrayList<Integer>> result = new ArrayList<>();
         if (arr == null || arr.length < 2) {
-            return  new ArrayList<>();
+            return result;
         }
 
-        Set<Integer> seen = new HashSet<>();
-        Set<String> uniquePair = new HashSet<>();
+        Arrays.sort(arr); // Sort the array to easily find complements
+        Set<String> uniquePairs = new HashSet<>(); // Use a set to store unique pairs as strings
 
-         for (int num : arr) {
-             int compliment = -num;
-             if (seen.contains(compliment)){
-                 int minValue = Math.min(num, compliment);
-                 int maxValue = Math.max(num, compliment);
-                 String pairString = minValue + "," + maxValue;
-                 if(uniquePair.add(pairString)){
-                    result.add(Arrays.asList(minValue, maxValue));
-                 }
-             }
-             seen.add(num);
-         }
+        int left = 0;
+        int right = arr.length - 1;
 
-         return result;
+        while (left < right) {
+            int sum = arr[left] + arr[right];
+            if (sum == 0) {
+                // Found a zero-sum pair
+                String pairString = arr[left] < arr[right] ? arr[left] + "," + arr[right] : arr[right] + "," + arr[left]; //create string representation of the pair
+                if (uniquePairs.add(pairString)) { // Add the string representation to the set
+                    ArrayList<Integer> pair = new ArrayList<>();
+                    pair.add(arr[left]);
+                    pair.add(arr[right]);
+                    result.add(pair);
+                }
+                left++;
+                right--;
+            } else if (sum < 0) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+        return result;
     }
 }
